@@ -29,7 +29,7 @@ function ArticleForm({ onSubmit, articleBeingEdited, onCancelEdit }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const payload = {
@@ -43,15 +43,22 @@ function ArticleForm({ onSubmit, articleBeingEdited, onCancelEdit }) {
         .filter(Boolean)
     };
 
-    onSubmit(payload);
+    await onSubmit(payload);
     setFormData(initialFormState);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="form">
-      <h3>{articleBeingEdited ? "Edit Article" : "Create Article"}</h3>
-      <label>
-        Title
+    <form onSubmit={handleSubmit} className="form-shell">
+      <div className="form-intro">
+        <h2>{articleBeingEdited ? "Edit Article" : "Create Article"}</h2>
+        <p className="muted">
+          Use the same fields as the API payload: title, content, category, and
+          comma-separated tags.
+        </p>
+      </div>
+
+      <label className="form-field">
+        <span>Title</span>
         <input
           name="title"
           value={formData.title}
@@ -61,8 +68,8 @@ function ArticleForm({ onSubmit, articleBeingEdited, onCancelEdit }) {
         />
       </label>
 
-      <label>
-        Content
+      <label className="form-field">
+        <span>Content</span>
         <textarea
           name="content"
           value={formData.content}
@@ -73,8 +80,8 @@ function ArticleForm({ onSubmit, articleBeingEdited, onCancelEdit }) {
         />
       </label>
 
-      <label>
-        Category
+      <label className="form-field">
+        <span>Category</span>
         <input
           name="category"
           value={formData.category}
@@ -84,8 +91,8 @@ function ArticleForm({ onSubmit, articleBeingEdited, onCancelEdit }) {
         />
       </label>
 
-      <label>
-        Tags (comma separated)
+      <label className="form-field">
+        <span>Tags (comma separated)</span>
         <input
           name="tags"
           value={formData.tags}
@@ -95,10 +102,10 @@ function ArticleForm({ onSubmit, articleBeingEdited, onCancelEdit }) {
         />
       </label>
 
-      <div className="actions">
-        <button type="submit">{articleBeingEdited ? "Update" : "Create"}</button>
+      <div className="form-actions">
+        <button type="submit">{articleBeingEdited ? "Update Article" : "Create Article"}</button>
         {articleBeingEdited && (
-          <button type="button" className="secondary" onClick={onCancelEdit}>
+          <button type="button" className="button-secondary" onClick={onCancelEdit}>
             Cancel Edit
           </button>
         )}
